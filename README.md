@@ -9,9 +9,10 @@ static site automation workflows.
 
 - Migrate the existing static website from Tilda to a VPS (and save some money)
 - Use GitHub Actions for automatic deployment
+- Use Termius (usually I use PuTTY / Solar-PuTTY) - looks really nice!
 - Rebuild the site using **Hugo** to enable:
-    - A small personal **blog**
-    - A **professional portfolio / business card** site
+    - A small personal blog
+    - A professional portfolio / business card site
 
 ## 🧰 Tools & Technologies
 
@@ -33,9 +34,13 @@ static site automation workflows.
 - **Nginx** — web server
 
 ## 📅 Next Steps
-* [ ] Set up Docker, configure Nginx, DNS
+* [x] Set up Docker, configure Nginx
+* [x] Migrate content from mirrored HTML
+* [x] Remove extra scripts etc. from HTML
+* [ ] Download images from Tilda, saving structure
+* [ ] Configure DNS
 * [ ] Set up Hugo project structure
 * [ ] Choose and customize a theme
-* [ ] Migrate content from mirrored HTML
 * [ ] Configure GitHub Actions for deployment
 * [ ] Launch the new version on VPS
+* [ ] Return SSL

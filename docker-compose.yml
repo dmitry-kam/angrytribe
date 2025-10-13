@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  hugo:
+    image: klakegg/hugo:ext-alpine
+    container_name: angrytribe_hugo
+    volumes:
+      - ./blog:/src
+    working_dir: /src
+    command: ["hugo", "--gc", "--minify"]
+    restart: no
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: angrytribe_nginx
+    ports:
+      - "${HTTP_PORT}:80"
+      - "${HTTPS_PORT}:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./homepage:/var/www/angrytribe/homepage
+      - ./blog/public:/var/www/angrytribe/blog
+      - ./old:/var/www/angrytribe/old
+    depends_on:
+      - hugo
+    restart: unless-stopped
