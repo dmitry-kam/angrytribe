@@ -37,7 +37,7 @@ static site automation workflows.
 * [x] Set up Docker, configure Nginx
 * [x] Migrate content from mirrored HTML
 * [x] Remove extra scripts etc. from HTML
-* [ ] Download images from Tilda, saving structure
+* [x] Download images etc. from Tilda, saving structure
 * [ ] Configure DNS
 * [ ] Set up Hugo project structure
 * [ ] Choose and customize a theme
