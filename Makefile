@@ -17,6 +17,9 @@ rebuild:
 	docker compose build --no-cache
 	docker compose up -d
 
+rebuild-nginx:
+	docker compose up -d --force-recreate --build nginx
+
 restart:
 	docker compose restart
 

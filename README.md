@@ -41,7 +41,9 @@ static site automation workflows.
 * [x] Create container with latest Hugo and set up theme
 * [x] Set up Hugo project structure (2 different sections)
 * [ ] Configure DNS
-* [ ] Choose and customize a theme
 * [ ] Configure GitHub Actions for deployment
-* [ ] Launch the new version on VPS
+* [ ] Launch the old version on VPS
 * [ ] Return SSL
+* [ ] Customize a theme
+* [ ] Fill content
+* [ ] Launch the new version on VPS
