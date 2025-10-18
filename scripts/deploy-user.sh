@@ -8,5 +8,4 @@ sudo -u deploy cat /home/deploy/.ssh/id_ed25519.pub
 sudo -u deploy cat /home/deploy/.ssh/id_ed25519
 
 git config --global --add safe.directory /var/www/angrytribe
-
 sudo chown -R deploy:deploy /var/www/angrytribe
