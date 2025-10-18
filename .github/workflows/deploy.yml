@@ -1,0 +1,65 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script_stop: true
+          command_timeout: 1m
+          script: |
+            set -e
+            echo "🚀 Starting deployment for angrytribe..."
+            cd /var/www/angrytribe
+
+            CURRENT_COMMIT=$(git rev-parse HEAD)
+            echo "📌 Current commit: $CURRENT_COMMIT"
+            
+            echo "📥 Pulling latest changes..."
+            git fetch origin master
+            git reset --hard origin/master
+            git clean -fd
+            
+            #git submodule update --init --recursive
+            
+            NEW_COMMIT=$(git rev-parse HEAD)
+            echo "📌 New commit: $NEW_COMMIT"
+            
+            echo "🔨 Rebuilding project..."
+            make rebuild
+            
+            echo "⏳ Waiting for containers to start..."
+            sleep 10
+            
+            echo "✅ Checking container status..."
+            docker compose ps
+            
+            echo "📋 Checking nginx logs..."
+            docker compose logs --tail=50 nginx | grep -i error || echo "No errors found"
+            
+            echo "🧹 Cleaning up..."
+            docker image prune -f
+            
+            echo "🎉 Deployment completed successfully!"
+            echo "Deployed commit: $NEW_COMMIT"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Check the logs above for details."
