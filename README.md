@@ -43,7 +43,7 @@ static site automation workflows.
 * [ ] Configure DNS
 * [ ] Configure GitHub Actions for deployment
 * [ ] Launch the old version on VPS
-* [ ] Return SSL
+* [ ] Return SSL to domain
 * [ ] Customize a theme
 * [ ] Fill content
 * [ ] Launch the new version on VPS
