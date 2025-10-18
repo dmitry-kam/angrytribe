@@ -1,0 +1,8 @@
+baseURL = "https://angrytribe.org/"
+languageCode = "en-us"
+title = "Angry Tribe Homepage"
+theme = "homepage-theme"
+publishDir = "../../output/homepage"
+
+[params]
+  description = "Main homepage of Angry Tribe"

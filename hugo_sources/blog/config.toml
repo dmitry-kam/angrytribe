@@ -1,0 +1,8 @@
+baseURL = "https://angrytribe.org/blog/"
+languageCode = "en-us"
+title = "Angry Tribe Blog"
+theme = "stack"
+publishDir = "../../output/blog"
+
+[params]
+  description = "Blog of Angry Tribe"
