@@ -32,4 +32,6 @@ sudo systemctl start docker
 echo "Adding current user to docker group (need to re-login)..."
 sudo usermod -aG docker "$USER"
 
+apt install make
+
 echo "Setup done. Docker installed."
