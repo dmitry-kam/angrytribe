@@ -1,1 +1,11 @@
 .env
+hugo_sources/blog/themes/*
+hugo_sources/blog/public/*
+hugo_sources/blog/resources/*
+hugo_sources/blog/.hugo_build.lock
+hugo_sources/homepage/themes/*
+hugo_sources/homepage/public/*
+hugo_sources/homepage/resources/*
+hugo_sources/homepage/.hugo_build.lock
+output/blog/*
+output/homepage/*

@@ -1,13 +1,17 @@
-version: '3.8'
-
 services:
   hugo:
-    image: klakegg/hugo:ext-alpine
+    #image: hugo:extended
+    build:
+      context: .
+      dockerfile: Dockerfile.hugo
     container_name: angrytribe_hugo
+    ports:
+      - "813:1313"
     volumes:
-      - ./blog:/src
+      - ./hugo_sources:/src
+      - ./output:/output
     working_dir: /src
-    command: ["hugo", "--gc", "--minify"]
+    user: "${CURRENT_UID:-1000}:${CURRENT_GID:-1000}"
     restart: no
 
   nginx:
@@ -19,8 +23,8 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/ssl:/etc/nginx/ssl
-      - ./homepage:/var/www/angrytribe/homepage
-      - ./blog/public:/var/www/angrytribe/blog
+      - ./output/homepage:/var/www/angrytribe/homepage
+      - ./output/blog:/var/www/angrytribe/blog
       - ./old:/var/www/angrytribe/old
     depends_on:
       - hugo

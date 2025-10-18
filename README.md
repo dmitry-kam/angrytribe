@@ -38,8 +38,9 @@ static site automation workflows.
 * [x] Migrate content from mirrored HTML
 * [x] Remove extra scripts etc. from HTML
 * [x] Download images etc. from Tilda, saving structure
+* [x] Create container with latest Hugo and set up theme
+* [x] Set up Hugo project structure (2 different sections)
 * [ ] Configure DNS
-* [ ] Set up Hugo project structure
 * [ ] Choose and customize a theme
 * [ ] Configure GitHub Actions for deployment
 * [ ] Launch the new version on VPS
