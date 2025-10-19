@@ -1,6 +1,5 @@
 services:
   hugo:
-    #image: hugo:extended
     build:
       context: .
       dockerfile: Dockerfile.hugo
@@ -26,6 +25,8 @@ services:
       - ./output/homepage:/var/www/angrytribe/homepage
       - ./output/blog:/var/www/angrytribe/blog
       - ./old:/var/www/angrytribe/old
+      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx/.well-known/acme-challenge:/etc/.well-known/acme-challenge
     depends_on:
       - hugo
     restart: unless-stopped
