@@ -5,7 +5,7 @@ docker compose stop nginx
 
 docker run -it --rm \
   -v $(pwd)/nginx/letsencrypt:/etc/nginx/letsencrypt \
-  -v $(pwd)/nginx/.well-known:/var/www/angrytribe/.well-known \
+  -v $(pwd)/.well-known:/var/www/angrytribe/.well-known \
   certbot/certbot certonly \
   --webroot \
   --webroot-path /var/www/angrytribe \
