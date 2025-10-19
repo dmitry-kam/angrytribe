@@ -21,11 +21,11 @@ services:
       - "${HTTPS_PORT}:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/ssl:/etc/nginx/ssl
       - ./output/homepage:/var/www/angrytribe/homepage
       - ./output/blog:/var/www/angrytribe/blog
       - ./old:/var/www/angrytribe/old
-      - ./nginx/letsencrypt:/etc/nginx/letsencrypt
+      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./nginx/ssl:/etc/nginx/ssl
       - ./.well-known/acme-challenge:/var/www/angrytribe/.well-known/acme-challenge
     depends_on:
       - hugo
