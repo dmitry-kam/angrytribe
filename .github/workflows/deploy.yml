@@ -25,6 +25,7 @@ jobs:
           script: |
             set -e
             echo "🚀 Starting deployment for angrytribe..."
+            sudo chown -R $$(id -u deploy):$$(id -g deploy) /var/www/angrytribe
             cd /var/www/angrytribe
 
             CURRENT_COMMIT=$(git rev-parse HEAD)
