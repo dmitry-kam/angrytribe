@@ -41,7 +41,7 @@ jobs:
             echo "📌 New commit: $NEW_COMMIT"
             
             echo "🔨 Rebuilding project..."
-            make rebuild
+            make rebuild-nginx
             
             echo "⏳ Waiting for containers to start..."
             sleep 10
