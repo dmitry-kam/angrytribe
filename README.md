@@ -40,10 +40,10 @@ static site automation workflows.
 * [x] Download images etc. from Tilda, saving structure
 * [x] Create container with latest Hugo and set up theme
 * [x] Set up Hugo project structure (2 different sections)
-* [ ] Configure DNS
-* [ ] Configure GitHub Actions for deployment
-* [ ] Launch the old version on VPS
-* [ ] Return SSL to domain
+* [x] Configure GitHub Actions for deployment
+* [x] Configure DNS
+* [x] Return SSL to domain
+* [x] Launch the old version on VPS
 * [ ] Customize a theme
 * [ ] Fill content
 * [ ] Launch the new version on VPS
