@@ -26,6 +26,7 @@ services:
       - ./output/blog:/var/www/angrytribe/blog
       - ./old:/var/www/angrytribe/old
       - ./nginx/letsencrypt:/etc/nginx/letsencrypt
+      - ./.well-known/acme-challenge:/var/www/angrytribe/.well-known/acme-challenge
     depends_on:
       - hugo
     restart: unless-stopped
