@@ -15,4 +15,4 @@
 /.idea/php.xml
 /.idea/vcs.xml
 /nginx/letsencrypt/
-/nginx/.well-known/
+/.well-known/
