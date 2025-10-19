@@ -31,9 +31,7 @@ jobs:
             echo "📌 Current commit: $CURRENT_COMMIT"
             
             echo "📥 Pulling latest changes..."
-            git fetch origin master
-            git reset --hard origin/master
-            git clean -fd
+            git fetch origin master && git reset --hard origin/master && git clean -fd
             
             #git submodule update --init --recursive
             
