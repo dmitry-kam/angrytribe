@@ -1,0 +1,80 @@
+name: Renew SSL Certificate
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 1 */2 *'  # Every 2 months on the 1st at 3am
+
+jobs:
+  renew-cert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Renew SSL Certificate on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script_stop: true
+          command_timeout: 5m
+          script: |
+            set -e
+            cd /var/www/angrytribe
+
+            echo "🔒 Starting SSL certificate renewal..."
+
+            # Step 1: Temporarily disable SSL config so nginx can start without cert
+            if [ -f nginx/conf.d/angrytribe-ssl.conf ]; then
+              mv nginx/conf.d/angrytribe-ssl.conf nginx/conf.d/angrytribe-ssl.conf.disabled
+              echo "SSL config disabled temporarily"
+            fi
+
+            # Step 2: Start nginx (HTTP only) to serve ACME challenge
+            docker compose up -d --force-recreate nginx
+            sleep 5
+            echo "nginx started (HTTP only)"
+
+            # Step 3: Run certbot webroot
+            docker run --rm \
+              -v "$(pwd)/nginx/letsencrypt:/etc/letsencrypt" \
+              -v "$(pwd)/.well-known:/var/www/angrytribe/.well-known" \
+              certbot/certbot certonly \
+              --webroot \
+              --webroot-path /var/www/angrytribe \
+              --non-interactive \
+              --agree-tos \
+              --email "${{ secrets.CERTBOT_EMAIL }}" \
+              --expand \
+              -d angrytribe.org \
+              -d www.angrytribe.org
+
+            echo "✅ Certificate obtained"
+
+            # Step 4: Re-enable SSL config
+            mv nginx/conf.d/angrytribe-ssl.conf.disabled nginx/conf.d/angrytribe-ssl.conf
+            echo "SSL config restored"
+
+            # Step 5: Restart nginx with SSL
+            docker compose restart nginx
+            sleep 5
+
+            echo "📋 Container status:"
+            docker compose ps nginx
+
+            echo "🎉 SSL certificate renewed successfully!"
+
+      - name: Restore SSL config on failure
+        if: failure()
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 1m
+          script: |
+            cd /var/www/angrytribe
+            if [ -f nginx/conf.d/angrytribe-ssl.conf.disabled ]; then
+              mv nginx/conf.d/angrytribe-ssl.conf.disabled nginx/conf.d/angrytribe-ssl.conf
+              echo "SSL config restored after failure"
+            fi
