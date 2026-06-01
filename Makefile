@@ -2,22 +2,30 @@ PROJECT_NAME=angrytribe
 DOCKER_RUN_HUGO = docker compose run --rm hugo hugo
 
 # Declare all commands as phony (i.e. not real files)
-.PHONY: up down rebuild logs hugo shell clean
+.PHONY: up down rebuild rebuild-nginx restart logs user new-page build-home build-blog clean hugo-version serve-blog free-port-80 renew-cert
+
+## Stop host nginx if it occupies port 80
+free-port-80:
+	@if ss -tlnp | grep ':80 ' | grep -q nginx; then \
+		echo "Port 80 is occupied by host nginx, stopping it..."; \
+		systemctl stop nginx 2>/dev/null || true; \
+		systemctl disable nginx 2>/dev/null || true; \
+	fi
 
 ## Start all containers in detached mode
-up:
+up: free-port-80
 	docker compose up -d
 
 ## Stop and remove containers
 down:
 	docker compose down
 
-rebuild:
+rebuild: free-port-80
 	docker compose down
 	docker compose build --no-cache
 	docker compose up -d
 
-rebuild-nginx:
+rebuild-nginx: free-port-80
 	docker compose up -d --force-recreate --build nginx
 
 restart:
@@ -28,6 +36,19 @@ logs:
 
 user:
 	id -u && id -g
+
+## Renew SSL certificate via certbot webroot
+renew-cert:
+	@if [ -f nginx/conf.d/angrytribe-ssl.conf ]; then \
+		mv nginx/conf.d/angrytribe-ssl.conf nginx/conf.d/angrytribe-ssl.conf.disabled; \
+	fi
+	docker compose up -d --force-recreate nginx
+	sleep 5
+	bash scripts/cert.sh
+	@if [ -f nginx/conf.d/angrytribe-ssl.conf.disabled ]; then \
+		mv nginx/conf.d/angrytribe-ssl.conf.disabled nginx/conf.d/angrytribe-ssl.conf; \
+	fi
+	docker compose restart nginx
 
 # make new-page dir=example name=example part=blog
 new-page:
